@@ -1,0 +1,92 @@
+-- Amir Ijad script2
+USE aijadassign2db;
+
+-- load the data from the text file into the patient table
+
+SELECT * FROM patient;
+LOAD DATA LOCAL INFILE '/home/centos/assignment2/loaddatafall2019.txt' INTO TABLE patient FIELDS TERMINATED BY ',' LINES TERMINATED BY '\n';
+
+-- insert myself as a patient
+
+INSERT INTO patient(OHIP, firstname, lastname) VALUES('123456789', 'Amir', 'Ijad');
+SELECT * FROM patient;
+
+-- show the empty doctor table then load data into it 
+
+SELECT * FROM doctor;
+
+INSERT INTO doctor(firstname, lastname, license, licensedate,specialty) VALUES('Bernie', 'Kavorikian', 'RD34', '1980-09-09', 'Urologist');
+INSERT INTO doctor(firstname, lastname, license, licensedate, specialty) VALUES('Joey', 'Shabado', 'GD56', '1960-06-24', 'Podiatrist');
+INSERT INTO doctor(firstname, lastname, license, licensedate, specialty) VALUES('Ross', 'Clooney', 'HT45', '1987-06-20', 'Surgeon');
+INSERT INTO doctor(firstname, lastname, license, licensedate, specialty) VALUES('Ben', 'Spock', 'YT67', '1955-02-20', 'Pediatrician');
+INSERT INTO doctor(firstname, lastname, license, licensedate, specialty) VALUES('Mandy', 'Webster', 'JK78', '1990-08-08', 'Surgeon');
+INSERT INTO doctor(firstname, lastname, license, licensedate, specialty) VALUES('Colleen', 'Aziz', 'SE66', '1989-08-24', 'Surgeon');
+INSERT INTO doctor(firstname, lastname, license, licensedate, specialty) VALUES('Gunderstain', 'Johanstone', 'GJ66', '1945-11-04', 'Gunson-specialization');
+
+-- show the doctor table
+
+SELECT * FROM doctor;
+
+-- show the hospital table 
+
+SELECT * FROM hospital;
+
+INSERT INTO hospital(name, city, province, numBeds, code, head, headDate) VALUES('St.Joseph', 'London', 'On', 1000, 'BBC', 'GD56', '1999-09-10');
+INSERT INTO hospital(name, city, province, numBeds, code, head, headDate) VALUES('Victoria', 'London', 'On', 1600, 'ABC', 'SE66', '1994-12-05');
+INSERT INTO hospital(name, city, province, numBeds, code, head, headDate) VALUES('Victoria', 'Victoria', 'BC', 1200, 'DDE', 'YT67', '1997-12-07');
+
+-- show the hospital table after insertions
+
+SELECT * FROM hospital;
+
+-- show the treats table 
+
+SELECT * FROM treats;
+
+INSERT INTO treats(OHIP, license) VALUES('110112113', 'GD56');
+INSERT INTO treats(OHIP, license) VALUES('444555666', 'HT45');
+INSERT INTO treats(OHIP, license) VALUES('444555666', 'JK78');
+INSERT INTO treats(OHIP, license) VALUES('111222333', 'SE66');
+INSERT INTO treats(OHIP, license) VALUES('111222333', 'YT67');
+INSERT INTO treats(OHIP, license) VALUES('111222333', 'JK78');
+INSERT INTO treats(OHIP, license) VALUES('333444555', 'GD56');
+INSERT INTO treats(OHIP, license) VALUES('667766777', 'YT67');
+INSERT INTO treats(OHIP, license) VALUES('667766777', 'JK78');
+INSERT INTO treats(OHIP, license) VALUES('667766777', 'GD56');
+INSERT INTO treats(OHIP, license) VALUES('111222111', 'YT67');
+INSERT INTO treats(OHIP, license) VALUES('123456789', 'GJ66');
+
+-- show the treats table after insertions
+
+SELECT * FROM treats;
+
+-- show the doctor table 
+
+SELECT * FROM doctor;
+
+-- update the worksOut data for doctor 
+
+UPDATE doctor SET worksOut = 'BBC' WHERE license = 'RD34';
+UPDATE doctor SET worksOut = 'BBC' WHERE license = 'GD56';
+UPDATE doctor SET worksOut = 'BBC' WHERE license = 'JK78';
+UPDATE doctor SET worksOut = 'DDE' WHERE license = 'HT45';
+UPDATE doctor SET worksOut = 'DDE' WHERE license = 'YT67';
+UPDATE doctor SET worksOut = 'ABC' WHERE license = 'SE66';
+UPDATE doctor SET worksOut = 'ABC' WHERE license = 'GJ66';
+
+-- show the doctor and patient tables
+
+SELECT * FROM doctor;
+SELECT * FROM patient;
+
+-- update patient data
+
+UPDATE patient SET lastname = 'Brown' WHERE OHIP = 111222111;
+SELECT * FROM patient;
+
+-- show the treats table 
+
+SELECT * FROM treats;
+UPDATE treats SET license = (SELECT DISTINCT license FROM doctor WHERE lastname = 'Clooney') WHERE license = (SELECT DISTINCT license FROM doctor WHERE lastname = 'Spock');
+SELECT * FROM treats;
+

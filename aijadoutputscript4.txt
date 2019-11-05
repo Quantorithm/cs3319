@@ -1,0 +1,142 @@
+Warning: Using a password on the command line interface can be insecure.
+--------------
+SELECT * FROM doctor
+--------------
+
++-------------+------------+---------+-------------+-----------------------+----------+
+| firstname   | lastname   | license | licensedate | specialty             | worksOut |
++-------------+------------+---------+-------------+-----------------------+----------+
+| Joey        | Shabado    | GD56    | 1960-06-24  | Podiatrist            | BBC      |
+| Gunderstain | Johanstone | GJ66    | 1945-11-04  | Gunson-specialization | ABC      |
+| Ross        | Clooney    | HT45    | 1987-06-20  | Surgeon               | DDE      |
+| Mandy       | Webster    | JK78    | 1990-08-08  | Surgeon               | BBC      |
+| Bernie      | Kavorikian | RD34    | 1980-09-09  | Urologist             | BBC      |
+| Colleen     | Aziz       | SE66    | 1989-08-24  | Surgeon               | ABC      |
+| Ben         | Spock      | YT67    | 1955-02-20  | Pediatrician          | DDE      |
++-------------+------------+---------+-------------+-----------------------+----------+
+7 rows in set (0.00 sec)
+
+ERROR 1451 (23000) at line 11: Cannot delete or update a parent row: a foreign key constraint fails (`aijadassign2db`.`hospital`, CONSTRAINT `hospital_ibfk_1` FOREIGN KEY (`head`) REFERENCES `doctor` (`license`))
+--------------
+DELETE FROM doctor WHERE licensedate < '1965-01-01'
+--------------
+
+--------------
+SELECT * FROM doctor
+--------------
+
++-------------+------------+---------+-------------+-----------------------+----------+
+| firstname   | lastname   | license | licensedate | specialty             | worksOut |
++-------------+------------+---------+-------------+-----------------------+----------+
+| Joey        | Shabado    | GD56    | 1960-06-24  | Podiatrist            | BBC      |
+| Gunderstain | Johanstone | GJ66    | 1945-11-04  | Gunson-specialization | ABC      |
+| Ross        | Clooney    | HT45    | 1987-06-20  | Surgeon               | DDE      |
+| Mandy       | Webster    | JK78    | 1990-08-08  | Surgeon               | BBC      |
+| Bernie      | Kavorikian | RD34    | 1980-09-09  | Urologist             | BBC      |
+| Colleen     | Aziz       | SE66    | 1989-08-24  | Surgeon               | ABC      |
+| Ben         | Spock      | YT67    | 1955-02-20  | Pediatrician          | DDE      |
++-------------+------------+---------+-------------+-----------------------+----------+
+7 rows in set (0.00 sec)
+
+--------------
+SELECT "an error occurs because of licenses are referenced by treats and hospital"
+--------------
+
++---------------------------------------------------------------------------+
+| an error occurs because of licenses are referenced by treats and hospital |
++---------------------------------------------------------------------------+
+| an error occurs because of licenses are referenced by treats and hospital |
++---------------------------------------------------------------------------+
+1 row in set (0.00 sec)
+
+--------------
+CREATE VIEW  patientsOfHead AS SELECT patient.firstname, patient.lastname, doctor.lastname AS docLast, hospital.name AS hospName FROM patient, treats, hospital, doctor WHERE patient.OHIP = treats.OHIP AND treats.license = hospital.head AND hospital.headDate > '1995-12-31' AND doctor.license = hospital.head
+--------------
+
+Query OK, 0 rows affected (0.00 sec)
+
+--------------
+SELECT * FROM patientsOfHead
+--------------
+
++-----------+----------+---------+-----------+
+| firstname | lastname | docLast | hospName  |
++-----------+----------+---------+-----------+
+| Bill      | Gellar   | Shabado | St.Joseph |
+| Colleen   | Gellar   | Shabado | St.Joseph |
+| Scotty    | Bing     | Shabado | St.Joseph |
++-----------+----------+---------+-----------+
+3 rows in set (0.00 sec)
+
+--------------
+SELECT * FROM doctor
+--------------
+
++-------------+------------+---------+-------------+-----------------------+----------+
+| firstname   | lastname   | license | licensedate | specialty             | worksOut |
++-------------+------------+---------+-------------+-----------------------+----------+
+| Joey        | Shabado    | GD56    | 1960-06-24  | Podiatrist            | BBC      |
+| Gunderstain | Johanstone | GJ66    | 1945-11-04  | Gunson-specialization | ABC      |
+| Ross        | Clooney    | HT45    | 1987-06-20  | Surgeon               | DDE      |
+| Mandy       | Webster    | JK78    | 1990-08-08  | Surgeon               | BBC      |
+| Bernie      | Kavorikian | RD34    | 1980-09-09  | Urologist             | BBC      |
+| Colleen     | Aziz       | SE66    | 1989-08-24  | Surgeon               | ABC      |
+| Ben         | Spock      | YT67    | 1955-02-20  | Pediatrician          | DDE      |
++-------------+------------+---------+-------------+-----------------------+----------+
+7 rows in set (0.01 sec)
+
+--------------
+SELECT * FROM treats
+--------------
+
++-----------+---------+
+| OHIP      | license |
++-----------+---------+
+| 110112113 | GD56    |
+| 444555666 | HT45    |
+| 444555666 | JK78    |
+| 111222333 | SE66    |
+| 111222333 | HT45    |
+| 111222333 | JK78    |
+| 333444555 | GD56    |
+| 667766777 | HT45    |
+| 667766777 | JK78    |
+| 667766777 | GD56    |
+| 111222111 | HT45    |
+| 123456789 | GJ66    |
++-----------+---------+
+12 rows in set (0.00 sec)
+
+--------------
+DELETE FROM doctor WHERE lastname = 'Clooney'
+--------------
+
+Query OK, 1 row affected (0.15 sec)
+
+--------------
+SELECT * FROM doctor
+--------------
+
++-------------+------------+---------+-------------+-----------------------+----------+
+| firstname   | lastname   | license | licensedate | specialty             | worksOut |
++-------------+------------+---------+-------------+-----------------------+----------+
+| Joey        | Shabado    | GD56    | 1960-06-24  | Podiatrist            | BBC      |
+| Gunderstain | Johanstone | GJ66    | 1945-11-04  | Gunson-specialization | ABC      |
+| Mandy       | Webster    | JK78    | 1990-08-08  | Surgeon               | BBC      |
+| Bernie      | Kavorikian | RD34    | 1980-09-09  | Urologist             | BBC      |
+| Colleen     | Aziz       | SE66    | 1989-08-24  | Surgeon               | ABC      |
+| Ben         | Spock      | YT67    | 1955-02-20  | Pediatrician          | DDE      |
++-------------+------------+---------+-------------+-----------------------+----------+
+6 rows in set (0.01 sec)
+
+ERROR 1451 (23000) at line 38: Cannot delete or update a parent row: a foreign key constraint fails (`aijadassign2db`.`hospital`, CONSTRAINT `hospital_ibfk_1` FOREIGN KEY (`head`) REFERENCES `doctor` (`license`))
+ERROR 1064 (42000) at line 40: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '-' at line 1
+--------------
+DELETE FROM doctor WHERE specialty = 'Surgeon'
+--------------
+
+--------------
+-
+--------------
+
+Bye

@@ -1,0 +1,41 @@
+-- Amir Ijad script 4
+
+USE aijadassign2db;
+
+-- show the doctor table
+
+SELECT * FROM doctor;
+
+-- delete doctors that got their license before Jan 1st 1965
+
+DELETE FROM doctor WHERE licensedate < '1965-01-01';
+
+-- show the doctor table
+
+SELECT * FROM doctor;
+SELECT "an error occurs because of licenses are referenced by treats and hospital";
+CREATE VIEW  patientsOfHead AS SELECT patient.firstname, patient.lastname, doctor.lastname AS docLast, hospital.name AS hospName FROM patient, treats, hospital, doctor WHERE patient.OHIP = treats.OHIP AND treats.license = hospital.head AND hospital.headDate > '1995-12-31' AND doctor.license = hospital.head; 
+
+-- show patientsOfHead 
+
+SELECT * FROM patientsOfHead;
+
+-- show data in the doctor and treats
+
+SELECT * FROM doctor;
+SELECT * FROM treats;
+
+-- delete the doctor clooney
+
+DELETE FROM doctor WHERE lastname = 'Clooney';
+
+-- show the doctor table
+
+SELECT * FROM doctor;
+
+-- try deleting all the surgeons 
+
+DELETE FROM doctor WHERE specialty = 'Surgeon';
+
+--- delete didn't work because Collen Aziz is a foreign key in another table
+
